@@ -1,1 +1,2 @@
-VimCrypt~03!X,┌\psэPM	╡Ы⌡1'вя≈bP>╢▀Ё]э╫]Rъq)yX|Н2:дY▐┼²+ы▌{лM!ht б╤╗╟S
+#!/bin/bash
+gcc -c "$CFILE" -o "${CFILE%.c}.o"
