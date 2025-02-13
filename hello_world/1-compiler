@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Check if CFILE is set
+if [ -z "$CFILE" ]; then
+    echo "Error: CFILE is not set."
+    exit 1
+fi
+
+# Extract the filename without the extension
+output_file="${CFILE%.c}.o"
+
+# Compile without linking
+gcc -c "$CFILE" -o "$output_file"
+
+# Check if compilation was successful
+if [ $? -eq 0 ]; then
+    echo "Compilation successful: $output_file created."
+else
+    echo "Compilation failed."
+    exit 1
+fi
