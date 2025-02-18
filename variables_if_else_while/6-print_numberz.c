@@ -11,12 +11,10 @@ int main(void)
 	number = 48;
 
 	do {
-	    putchar(number);
-	    number++;
-		
+		putchar(number);
+		number++;
+
 	} while (number <= 57);
-		
 	putchar('\n');
 	return (0);
 }
-
