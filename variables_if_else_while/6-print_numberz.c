@@ -1,10 +1,7 @@
 #include <stdio.h>
 
 /**
- * main - Entry point of the program
- *
- * Description: Prints single-digit numbers of base 10 using only putchar twice.
- *
+ * main - Entry main dowhile numbers
  * Return: Always 0 (Success)
  */
 int main(void)
@@ -13,7 +10,7 @@ int main(void)
 
 	number = 48
 	do {
-		putchar(numer);
+		putchar(number);
 		number++;
 		
 	} while (number <= 57)
