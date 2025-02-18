@@ -3,16 +3,20 @@
 /**
  * main - Entry point of the program
  *
- * Description: Prints the uppercase alphabet using only putchar.
+ * Description: Prints the lowercase and uppercase alphabet using only putchar.
  *
  * Return: Always 0 (Success)
  */
 int main(void)
 {
-	char ch;
+	char ch = 'a';
 
-	for (ch = 'A'; ch <= 'Z'; ch++)
-		putchar(ch);
+	while (ch <= 'z') /* Print lowercase letters */
+		putchar(ch++);
+
+	ch = 'A';
+	while (ch <= 'Z') /* Print uppercase letters */
+		putchar(ch++);
 
 	putchar('\n'); /* Print newline */
 
