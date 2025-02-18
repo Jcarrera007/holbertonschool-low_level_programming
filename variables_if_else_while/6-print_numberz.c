@@ -9,13 +9,16 @@
  */
 int main(void)
 {
-	int num = 0;
+	int number;
 
-	while (num < 10)
-		putchar(num++ + '0'); /* Convert integer to character */
-
-	putchar('\n'); /* Print newline */
-
+	number = 48
+	do {
+		putchar(numer);
+		number++;
+		
+	} while (number <= 57)
+		
+	putchar('\n');
 	return (0);
 }
 
