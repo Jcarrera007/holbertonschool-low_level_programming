@@ -1,25 +1,20 @@
-#include <stdio.h>
 #include "main.h"
 
 /**
- * main - Entry point
+ * main - Print var
  *
- * Description: Prints "_putchar" followed by a new line
- *
- * Return: Always 0 (Success)
+ * Return: Always 0
  */
 int main(void)
 {
+	char *p = "_putchar";
 
-	_putchar("_");
-	_putchar("p");
-	-putchar("u");
-	_putchar("t");
-	_putchar("c");
-	_putchar("h");
-	_putchar("a");
-	_putchar("r");
+	while (*p)
+	{
+		_putchar(*p);
+		p++;
+	}
 
+	_putchar('\n');
 	return (0);
 }
-
