@@ -15,7 +15,7 @@ void print_alphabet_x10(void)
             _putchar(alphabet[i]);
             i++;
         }
-        i = 0;  /* Reset index for next iteration */
+        i = 0;
     }
 }
 
