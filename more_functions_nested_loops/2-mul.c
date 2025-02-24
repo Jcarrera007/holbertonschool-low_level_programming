@@ -2,7 +2,8 @@
 
 /**
  * mul - is to multiply digits
- * @a,b: are the digits to multiply
+ * @a: is a digit to multiply
+ * @b: is a digit to multiply
  *
  * Return: Always 0.
  */
