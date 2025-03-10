@@ -10,15 +10,15 @@
  * Description: This structure holds information about a dog, including
  * its name, age, and owner's name.
  */
-struct dog
+typedef struct dog
 {
 	char *name;
 	float age;
 	char *owner;
-};
+} dog_t;
 
-/* Typedef for struct dog */
-typedef struct dog dog_t;
+/* Function prototypes */
+dog_t *new_dog(char *name, float age, char *owner);
 
 #endif /* DOG_H */
 
