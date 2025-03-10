@@ -6,7 +6,7 @@
  * @size: The size of the array.
  * @c: The character to initialize the array with.
  *
- * Return: Pointer to the array, or NULL if size is 0 or memory allocation fails.
+ * Return: Pointer to the arrayor NULL if size is 0 or memory allocation fails.
  */
 
 char *create_array(unsigned int size, char c)
@@ -16,11 +16,9 @@ char *create_array(unsigned int size, char c)
 
 	if (size == 0) /* If size is 0, return NULL */
 		return (NULL);
-
 	arr = malloc(size * sizeof(char)); /* Allocate memory */
 	if (arr == NULL) /* Check if malloc failed */
 		return (NULL);
-
 	for (i = 0; i < size; i++) /* Initialize array with char c */
 		arr[i] = c;
 
