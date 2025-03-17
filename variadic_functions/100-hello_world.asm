@@ -17,3 +17,4 @@ _start:
     mov rax, 60        ; syscall: sys_exit
     xor rdi, rdi       ; exit code 0
     syscall            ; invoke system call
+
