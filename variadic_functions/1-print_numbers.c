@@ -8,22 +8,22 @@
  */
 void print_numbers(const char *separator, const unsigned int n, ...)
 {
-    va_list args;
-    unsigned int i;
+	va_list args;
+	unsigned int i;
 
-    va_start(args, n);  /* Initialize the argument list */
+	va_start(args, n);  /* Initialize the argument list */
 
-    for (i = 0; i < n; i++)
-    {
-        printf("%d", va_arg(args, int));
+	for (i = 0; i < n; i++)
+	{
+		printf("%d", va_arg(args, int));
 
-        /* Print separator only if it's not NULL and not the last element */
-        if (separator != NULL && i < n - 1)
-            printf("%s", separator);
-    }
+		/* Print separator only if it's not NULL and not the last element */
+		if (separator != NULL && i < n - 1)
+			printf("%s", separator);
+	}
 
-    va_end(args);  /* Clean up the argument list */
+	va_end(args);  /* Clean up the argument list */
 
-    printf("\n");  /* Print new line at the end */
+	printf("\n");  /* Print new line at the end */
 }
 
