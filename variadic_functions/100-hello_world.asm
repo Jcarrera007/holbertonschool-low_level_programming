@@ -1,18 +1,15 @@
-section .data
-    msg db "Hello, World", 10  ; Message with newline character
-    len equ $ - msg             ; Calculate message length
+SECTION .data
+msg:     db "Hello, World!", 10 ;message, use 10 for new line
 
-section .text
-    global _start               ; Entry point for the linker
+    SECTION .text
+    global main         ;declaration of main function for gcc
+main:
+    mov rdx, 17         ;third argument: length of string
+    mov rcx, msg        ;second argument: pointer to message to write
+    mov rbx, 1        ;first argument: file handle (stdout)
+    mov rax, 4        ;system call number (sys_write)
+    int 0x80        ;call kernel (interrupt)
 
-_start:
-    mov rax, 1                  ; syscall: write
-    mov rdi, 1                  ; file descriptor: stdout
-    mov rsi, msg                ; pointer to message
-    mov rdx, len                ; message length
-    syscall                     ; invoke system call
-
-    mov rax, 60                 ; syscall: exit
-    xor rdi, rdi                ; status: 0
-    syscall                     ; invoke system call
-
+    mov rbx, 0        ;move 0 to rbx (exit code)
+    mov rax, 1        ;system call for exit
+    int 0x80        ;call kernel (interrupt)
