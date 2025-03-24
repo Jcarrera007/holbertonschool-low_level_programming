@@ -4,7 +4,7 @@ msg:     db "Hello, World", 10 ;message, use 10 for new line
     SECTION .text
     global main         ;declaration of main function for gcc
 main:
-    mov rdx, 17         ;third argument: length of string
+    mov rdx, 13         ;third argument: length of string
     mov rcx, msg        ;second argument: pointer to message to write
     mov rbx, 1        ;first argument: file handle (stdout)
     mov rax, 4        ;system call number (sys_write)
