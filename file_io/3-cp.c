@@ -1,34 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
 
-#define BUFFER_SIZE 1024
+#define BUF_SIZE 1024
 
 /**
- * print_error - prints error messages to STDERR and exits
- * @code: exit status
- * @message: format string
- * @arg: string to format into message
+ * print_error - prints an error message and exits with a code
+ * @code: the exit code
+ * @format: format string for the error message
+ * @arg: string to format into the error message
  */
-void print_error(int code, const char *message, const char *arg)
+void print_error(int code, const char *format, const char *arg)
 {
-	dprintf(STDERR_FILENO, message, arg);
+	dprintf(STDERR_FILENO, format, arg);
 	exit(code);
 }
 
 /**
- * main - copies content from one file to another
+ * main - copies the content of one file to another
  * @argc: argument count
- * @argv: argument values
+ * @argv: argument values (filenames)
  *
- * Return: 0 on success, otherwise exits with specific error code
+ * Return: 0 on success, exits with specific error codes otherwise
  */
 int main(int argc, char *argv[])
 {
 	int fd_from, fd_to;
 	ssize_t r_bytes, w_bytes;
-	char buffer[BUFFER_SIZE];
+	char buffer[BUF_SIZE];
 
 	if (argc != 3)
 		print_error(97, "Usage: cp file_from file_to\n", "");
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 		print_error(99, "Error: Can't write to %s\n", argv[2]);
 	}
 
-	while ((r_bytes = read(fd_from, buffer, BUFFER_SIZE)) > 0)
+	while ((r_bytes = read(fd_from, buffer, BUF_SIZE)) > 0)
 	{
 		w_bytes = write(fd_to, buffer, r_bytes);
 		if (w_bytes == -1 || w_bytes != r_bytes)
