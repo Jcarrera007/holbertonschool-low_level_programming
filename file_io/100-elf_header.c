@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <elf.h>
 #include <string.h>
 #include <errno.h>
@@ -38,12 +38,38 @@ void print_osabi(unsigned char osabi)
 	printf("  OS/ABI:                            ");
 	switch (osabi)
 	{
-		case ELFOSABI_SYSV: printf("UNIX - System V\n"); break;
-		case ELFOSABI_LINUX: printf("UNIX - Linux\n"); break;
-		case ELFOSABI_NETBSD: printf("UNIX - NetBSD\n"); break;
-		case ELFOSABI_SOLARIS: printf("UNIX - Solaris\n"); break;
+		case ELFOSABI_SYSV:
+			printf("UNIX - System V\n");
+			break;
+		case ELFOSABI_HPUX:
+			printf("UNIX - HP-UX\n");
+			break;
+		case ELFOSABI_NETBSD:
+			printf("UNIX - NetBSD\n");
+			break;
+		case ELFOSABI_LINUX:
+			printf("UNIX - Linux\n");
+			break;
+		case ELFOSABI_SOLARIS:
+			printf("UNIX - Solaris\n");
+			break;
+		case ELFOSABI_IRIX:
+			printf("UNIX - IRIX\n");
+			break;
+		case ELFOSABI_FREEBSD:
+			printf("UNIX - FreeBSD\n");
+			break;
+		case ELFOSABI_TRU64:
+			printf("UNIX - TRU64\n");
+			break;
+		case ELFOSABI_ARM:
+			printf("ARM\n");
+			break;
+		case ELFOSABI_STANDALONE:
+			printf("Standalone App\n");
+			break;
 		default:
-			printf("Unknown: %x>\n", osabi);
+			printf("<unknown: %x>\n", osabi);
 			break;
 	}
 }
@@ -52,7 +78,7 @@ void print_osabi(unsigned char osabi)
  * main - Entry point: display ELF header
  * @argc: Argument count
  * @argv: Argument vector
- * Return: 0 on success
+ * Return: 0 on success, 98 on error
  */
 int main(int argc, char *argv[])
 {
@@ -99,7 +125,9 @@ int main(int argc, char *argv[])
 	if (e_ident[EI_CLASS] == ELFCLASS32)
 	{
 		Elf32_Ehdr h32;
-		lseek(fd, 0, SEEK_SET);
+
+		if (lseek(fd, 0, SEEK_SET) == -1)
+			print_error("Failed to seek in ELF file");
 		if (read(fd, &h32, sizeof(h32)) != sizeof(h32))
 			print_error("Failed to read 32-bit ELF header");
 
@@ -118,7 +146,9 @@ int main(int argc, char *argv[])
 	else if (e_ident[EI_CLASS] == ELFCLASS64)
 	{
 		Elf64_Ehdr h64;
-		lseek(fd, 0, SEEK_SET);
+
+		if (lseek(fd, 0, SEEK_SET) == -1)
+			print_error("Failed to seek in ELF file");
 		if (read(fd, &h64, sizeof(h64)) != sizeof(h64))
 			print_error("Failed to read 64-bit ELF header");
 
@@ -142,5 +172,4 @@ int main(int argc, char *argv[])
 	close(fd);
 	return (0);
 }
-
 
