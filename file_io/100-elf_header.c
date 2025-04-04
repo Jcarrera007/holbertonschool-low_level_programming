@@ -6,44 +6,28 @@
 #include <string.h>
 #include <errno.h>
 
-/**
- * print_error - Print error and exit with code 98
- * @msg: The error message
- */
 void print_error(const char *msg)
 {
 	dprintf(STDERR_FILENO, "Error: %s\n", msg);
 	exit(98);
 }
 
-/**
- * check_elf - Verify ELF file signature
- * @e_ident: Identifier bytes
- */
 void check_elf(unsigned char *e_ident)
 {
 	if (e_ident[EI_MAG0] != ELFMAG0 ||
 			e_ident[EI_MAG1] != ELFMAG1 ||
 			e_ident[EI_MAG2] != ELFMAG2 ||
 			e_ident[EI_MAG3] != ELFMAG3)
+	{
 		print_error("Not an ELF file");
+	}
 }
 
-/**
- * swap16 - Swap byte order for 16-bit values
- * @val: value to swap
- * Return: swapped value
- */
 unsigned short swap16(unsigned short val)
 {
-	return (val << 8) | (val >> 8);
+	return ((val << 8) | (val >> 8));
 }
 
-/**
- * swap32 - Swap byte order for 32-bit values
- * @val: value to swap
- * Return: swapped value
- */
 unsigned int swap32(unsigned int val)
 {
 	return ((val >> 24) & 0xFF) |
@@ -52,52 +36,59 @@ unsigned int swap32(unsigned int val)
 		((val << 24) & 0xFF000000);
 }
 
-/**
- * swap64 - Swap byte order for 64-bit values
- * @val: value to swap
- * Return: swapped value
- */
 unsigned long swap64(unsigned long val)
 {
 	return ((val >> 56) & 0x00000000000000FFUL) |
 		((val >> 40) & 0x000000000000FF00UL) |
 		((val >> 24) & 0x0000000000FF0000UL) |
-		((val >> 8)  & 0x00000000FF000000UL) |
-		((val << 8)  & 0x000000FF00000000UL) |
+		((val >> 8) & 0x00000000FF000000UL) |
+		((val << 8) & 0x000000FF00000000UL) |
 		((val << 24) & 0x0000FF0000000000UL) |
 		((val << 40) & 0x00FF000000000000UL) |
 		((val << 56) & 0xFF00000000000000UL);
 }
 
-/**
- * print_osabi - Print OS/ABI name
- * @osabi: ELF OS/ABI field
- */
 void print_osabi(unsigned char osabi)
 {
 	printf("  OS/ABI:                            ");
 	switch (osabi)
 	{
-		case ELFOSABI_SYSV:     printf("UNIX - System V\n"); break;
-		case ELFOSABI_HPUX:     printf("UNIX - HP-UX\n"); break;
-		case ELFOSABI_NETBSD:   printf("UNIX - NetBSD\n"); break;
-		case ELFOSABI_LINUX:    printf("UNIX - Linux\n"); break;
-		case ELFOSABI_SOLARIS:  printf("UNIX - Solaris\n"); break;
-		case ELFOSABI_IRIX:     printf("UNIX - IRIX\n"); break;
-		case ELFOSABI_FREEBSD:  printf("UNIX - FreeBSD\n"); break;
-		case ELFOSABI_TRU64:    printf("UNIX - TRU64\n"); break;
-		case ELFOSABI_ARM:      printf("ARM\n"); break;
-		case ELFOSABI_STANDALONE: printf("Standalone App\n"); break;
-		default: printf("<unknown: %x>\n", osabi); break;
+		case ELFOSABI_SYSV:
+			printf("UNIX - System V\n");
+			break;
+		case ELFOSABI_HPUX:
+			printf("UNIX - HP-UX\n");
+			break;
+		case ELFOSABI_NETBSD:
+			printf("UNIX - NetBSD\n");
+			break;
+		case ELFOSABI_LINUX:
+			printf("UNIX - Linux\n");
+			break;
+		case ELFOSABI_SOLARIS:
+			printf("UNIX - Solaris\n");
+			break;
+		case ELFOSABI_IRIX:
+			printf("UNIX - IRIX\n");
+			break;
+		case ELFOSABI_FREEBSD:
+			printf("UNIX - FreeBSD\n");
+			break;
+		case ELFOSABI_TRU64:
+			printf("UNIX - TRU64\n");
+			break;
+		case ELFOSABI_ARM:
+			printf("ARM\n");
+			break;
+		case ELFOSABI_STANDALONE:
+			printf("Standalone App\n");
+			break;
+		default:
+			printf("<unknown: %x>\n", osabi);
+			break;
 	}
 }
 
-/**
- * main - Display ELF header
- * @argc: Argument count
- * @argv: Argument vector
- * Return: 0 on success, 98 on failure
- */
 int main(int argc, char *argv[])
 {
 	int fd, i;
@@ -118,7 +109,13 @@ int main(int argc, char *argv[])
 	printf("ELF Header:\n");
 	printf("  Magic:   ");
 	for (i = 0; i < EI_NIDENT; i++)
-		printf("%02x%c", e_ident[i], i == EI_NIDENT - 1 ? '\n' : ' ');
+	{
+		printf("%02x", e_ident[i]);
+		if (i < EI_NIDENT - 1)
+			printf(" ");
+		else
+			printf("\n");
+	}
 
 	printf("  Class:                             ");
 	if (e_ident[EI_CLASS] == ELFCLASS32)
@@ -139,7 +136,9 @@ int main(int argc, char *argv[])
 	printf("  Version:                           %d", e_ident[EI_VERSION]);
 	if (e_ident[EI_VERSION] == EV_CURRENT)
 		printf(" (current)");
-	printf("\n");	print_osabi(e_ident[EI_OSABI]);
+	printf("\n");
+
+	print_osabi(e_ident[EI_OSABI]);
 	printf("  ABI Version:                       %d\n", e_ident[EI_ABIVERSION]);
 
 	if (e_ident[EI_CLASS] == ELFCLASS32)
@@ -160,13 +159,22 @@ int main(int argc, char *argv[])
 		printf("  Type:                              ");
 		switch (type)
 		{
-			case ET_EXEC: printf("EXEC (Executable file)\n"); break;
-			case ET_REL:  printf("REL (Relocatable file)\n"); break;
-			case ET_DYN:  printf("DYN (Shared object file)\n"); break;
-			case ET_CORE: printf("CORE (Core file)\n"); break;
-			default:      printf("Unknown type\n"); break;
+			case ET_EXEC:
+				printf("EXEC (Executable file)\n");
+				break;
+			case ET_REL:
+				printf("REL (Relocatable file)\n");
+				break;
+			case ET_DYN:
+				printf("DYN (Shared object file)\n");
+				break;
+			case ET_CORE:
+				printf("CORE (Core file)\n");
+				break;
+			default:
+				printf("Unknown type\n");
+				break;
 		}
-
 		printf("  Entry point address:               %#x\n", entry);
 	}
 	else if (e_ident[EI_CLASS] == ELFCLASS64)
@@ -187,13 +195,22 @@ int main(int argc, char *argv[])
 		printf("  Type:                              ");
 		switch (type)
 		{
-			case ET_EXEC: printf("EXEC (Executable file)\n"); break;
-			case ET_REL:  printf("REL (Relocatable file)\n"); break;
-			case ET_DYN:  printf("DYN (Shared object file)\n"); break;
-			case ET_CORE: printf("CORE (Core file)\n"); break;
-			default:      printf("Unknown type\n"); break;
+			case ET_EXEC:
+				printf("EXEC (Executable file)\n");
+				break;
+			case ET_REL:
+				printf("REL (Relocatable file)\n");
+				break;
+			case ET_DYN:
+				printf("DYN (Shared object file)\n");
+				break;
+			case ET_CORE:
+				printf("CORE (Core file)\n");
+				break;
+			default:
+				printf("Unknown type\n");
+				break;
 		}
-
 		printf("  Entry point address:               %#lx\n", entry);
 	}
 	else
