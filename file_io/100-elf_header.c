@@ -7,8 +7,8 @@
 #include <errno.h>
 
 /**
- * print_error - Prints error message and exits with code 98
- * @msg: Error message string
+ * print_error - Print error and exit with code 98
+ * @msg: The error message
  */
 void print_error(const char *msg)
 {
@@ -17,8 +17,8 @@ void print_error(const char *msg)
 }
 
 /**
- * check_elf - Validates ELF magic numbers
- * @e_ident: Pointer to ELF identification array
+ * check_elf - Verify ELF file signature
+ * @e_ident: Identifier bytes
  */
 void check_elf(unsigned char *e_ident)
 {
@@ -30,9 +30,9 @@ void check_elf(unsigned char *e_ident)
 }
 
 /**
- * swap16 - Swaps byte order of a 16-bit unsigned integer
- * @val: Value to swap
- * Return: Swapped value
+ * swap16 - Swap byte order for 16-bit values
+ * @val: value to swap
+ * Return: swapped value
  */
 unsigned short swap16(unsigned short val)
 {
@@ -40,9 +40,9 @@ unsigned short swap16(unsigned short val)
 }
 
 /**
- * swap32 - Swaps byte order of a 32-bit unsigned integer
- * @val: Value to swap
- * Return: Swapped value
+ * swap32 - Swap byte order for 32-bit values
+ * @val: value to swap
+ * Return: swapped value
  */
 unsigned int swap32(unsigned int val)
 {
@@ -53,69 +53,47 @@ unsigned int swap32(unsigned int val)
 }
 
 /**
- * swap64 - Swaps byte order of a 64-bit unsigned long
- * @val: Value to swap
- * Return: Swapped value
+ * swap64 - Swap byte order for 64-bit values
+ * @val: value to swap
+ * Return: swapped value
  */
 unsigned long swap64(unsigned long val)
 {
 	return ((val >> 56) & 0x00000000000000FFUL) |
 		((val >> 40) & 0x000000000000FF00UL) |
 		((val >> 24) & 0x0000000000FF0000UL) |
-		((val >> 8) & 0x00000000FF000000UL) |
-		((val << 8) & 0x000000FF00000000UL) |
+		((val >> 8)  & 0x00000000FF000000UL) |
+		((val << 8)  & 0x000000FF00000000UL) |
 		((val << 24) & 0x0000FF0000000000UL) |
 		((val << 40) & 0x00FF000000000000UL) |
 		((val << 56) & 0xFF00000000000000UL);
 }
 
 /**
- * print_osabi - Prints the OS/ABI field
- * @osabi: OS/ABI value
+ * print_osabi - Print OS/ABI name
+ * @osabi: ELF OS/ABI field
  */
 void print_osabi(unsigned char osabi)
 {
 	printf("  OS/ABI:                            ");
 	switch (osabi)
 	{
-		case ELFOSABI_SYSV:
-			printf("UNIX - System V\n");
-			break;
-		case ELFOSABI_HPUX:
-			printf("UNIX - HP-UX\n");
-			break;
-		case ELFOSABI_NETBSD:
-			printf("UNIX - NetBSD\n");
-			break;
-		case ELFOSABI_LINUX:
-			printf("UNIX - Linux\n");
-			break;
-		case ELFOSABI_SOLARIS:
-			printf("UNIX - Solaris\n");
-			break;
-		case ELFOSABI_IRIX:
-			printf("UNIX - IRIX\n");
-			break;
-		case ELFOSABI_FREEBSD:
-			printf("UNIX - FreeBSD\n");
-			break;
-		case ELFOSABI_TRU64:
-			printf("UNIX - TRU64\n");
-			break;
-		case ELFOSABI_ARM:
-			printf("ARM\n");
-			break;
-		case ELFOSABI_STANDALONE:
-			printf("Standalone App\n");
-			break;
-		default:
-			printf("<unknown: %x>\n", osabi);
-			break;
+		case ELFOSABI_SYSV:     printf("UNIX - System V\n"); break;
+		case ELFOSABI_HPUX:     printf("UNIX - HP-UX\n"); break;
+		case ELFOSABI_NETBSD:   printf("UNIX - NetBSD\n"); break;
+		case ELFOSABI_LINUX:    printf("UNIX - Linux\n"); break;
+		case ELFOSABI_SOLARIS:  printf("UNIX - Solaris\n"); break;
+		case ELFOSABI_IRIX:     printf("UNIX - IRIX\n"); break;
+		case ELFOSABI_FREEBSD:  printf("UNIX - FreeBSD\n"); break;
+		case ELFOSABI_TRU64:    printf("UNIX - TRU64\n"); break;
+		case ELFOSABI_ARM:      printf("ARM\n"); break;
+		case ELFOSABI_STANDALONE: printf("Standalone App\n"); break;
+		default: printf("<unknown: %x>\n", osabi); break;
 	}
 }
 
 /**
- * main - Displays ELF header information
+ * main - Display ELF header
  * @argc: Argument count
  * @argv: Argument vector
  * Return: 0 on success, 98 on failure
@@ -158,7 +136,7 @@ int main(int argc, char *argv[])
 	else
 		printf("Invalid data encoding\n");
 
-	printf("  Version:                           %d\n", e_ident[EI_VERSION]);
+	printf("  Version:                           %d (current)\n", e_ident[EI_VERSION]);
 	print_osabi(e_ident[EI_OSABI]);
 	printf("  ABI Version:                       %d\n", e_ident[EI_ABIVERSION]);
 
