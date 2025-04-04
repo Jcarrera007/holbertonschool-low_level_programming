@@ -1,14 +1,16 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <elf.h>
 #include <string.h>
 #include <errno.h>
 
+#define BUF_SIZE 1024
+
 /**
- * print_error - Print an error message and exit with code 98
- * @msg: error message
+ * print_error - Prints an error message and exits with code 98
+ * @msg: The error message
  */
 void print_error(const char *msg)
 {
@@ -17,8 +19,8 @@ void print_error(const char *msg)
 }
 
 /**
- * check_elf - Checks if a file is a valid ELF file
- * @e_ident: ELF header identifier
+ * check_elf - Checks if file is an ELF file
+ * @e_ident: Identifier bytes from the ELF header
  */
 void check_elf(unsigned char *e_ident)
 {
@@ -36,48 +38,38 @@ void check_elf(unsigned char *e_ident)
 void print_class(unsigned char class)
 {
 	printf("  Class:                             ");
-	switch (class)
-	{
-		case ELFCLASS32:
-			printf("ELF32\n");
-			break;
-		case ELFCLASS64:
-			printf("ELF64\n");
-			break;
-		default:
-			printf("Invalid class\n");
-	}
+	if (class == ELFCLASS32)
+		printf("ELF32\n");
+	else if (class == ELFCLASS64)
+		printf("ELF64\n");
+	else
+		printf("Invalid class\n");
 }
 
 /**
- * print_data - Print data encoding
- * @data: encoding
+ * print_data - Print ELF data encoding
+ * @data: encoding type
  */
 void print_data(unsigned char data)
 {
 	printf("  Data:                              ");
-	switch (data)
-	{
-		case ELFDATA2LSB:
-			printf("2's complement, little endian\n");
-			break;
-		case ELFDATA2MSB:
-			printf("2's complement, big endian\n");
-			break;
-		default:
-			printf("Invalid data encoding\n");
-	}
+	if (data == ELFDATA2LSB)
+		printf("2's complement, little endian\n");
+	else if (data == ELFDATA2MSB)
+		printf("2's complement, big endian\n");
+	else
+		printf("Invalid data encoding\n");
 }
 
 /**
- * main - Displays ELF header information
- * @argc: number of args
- * @argv: arg vector
- * Return: 0 on success
+ * main - Display the ELF header of a file
+ * @argc: argument count
+ * @argv: argument vector
+ * Return: 0 on success, 98 on failure
  */
 int main(int argc, char *argv[])
 {
-	int fd;
+	int fd, i;
 	Elf64_Ehdr header;
 
 	if (argc != 2)
@@ -95,11 +87,39 @@ int main(int argc, char *argv[])
 
 	check_elf(header.e_ident);
 
-	/* Print header info */
 	printf("ELF Header:\n");
 	printf("  Magic:   ");
-	for (int i = 0; i < EI_NIDENT; i++)
+	for (i = 0; i < EI_NIDENT; i++)
 		printf("%02x%c", header.e_ident[i], i == EI_NIDENT - 1 ? '\n' : ' ');
 
-	print
+	print_class(header.e_ident[EI_CLASS]);
+	print_data(header.e_ident[EI_DATA]);
+
+	printf("  Version:                           %d (current)\n", header.e_ident[EI_VERSION]);
+
+	printf("  OS/ABI:                            ");
+	switch (header.e_ident[EI_OSABI])
+	{
+		case ELFOSABI_SYSV: printf("UNIX - System V\n"); break;
+		case ELFOSABI_LINUX: printf("UNIX - Linux\n"); break;
+		default: printf("Unknown\n"); break;
+	}
+
+	printf("  ABI Version:                       %d\n", header.e_ident[EI_ABIVERSION]);
+
+	printf("  Type:                              ");
+	switch (header.e_type)
+	{
+		case ET_EXEC: printf("EXEC (Executable file)\n"); break;
+		case ET_REL: printf("REL (Relocatable file)\n"); break;
+		case ET_DYN: printf("DYN (Shared object file)\n"); break;
+		case ET_CORE: printf("CORE (Core file)\n"); break;
+		default: printf("Unknown type\n"); break;
+	}
+
+	printf("  Entry point address:               %#lx\n", (unsigned long)header.e_entry);
+
+	close(fd);
+	return (0);
+}
 
