@@ -44,7 +44,11 @@ int main(int argc, char *argv[])
 
 	while ((r = read(fd_from, buffer, 1024)) > 0)
 	{
+		printf("Bytes read: %d\n", r); /*Depuration*/
+
 		w = write(fd_to, buffer, r);
+		printf("Bytes writes: %d\n", w); /*Depuration*/
+
 		if (w != r)
 			error_exit(99, "Error: Can't write to", argv[2]);
 	}
