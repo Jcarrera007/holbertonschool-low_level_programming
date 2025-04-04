@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
 	else
 		printf("Invalid data encoding\n");
 
-	printf("  Version:                           %d\n", e_ident[EI_VERSION]);
+	printf("  Version:                           %d (current)\n", e_ident[EI_VERSION]);
 	print_osabi(e_ident[EI_OSABI]);
 	printf("  ABI Version:                       %d\n", e_ident[EI_ABIVERSION]);
 
