@@ -43,7 +43,7 @@ void print_osabi(unsigned char osabi)
 		case ELFOSABI_NETBSD: printf("UNIX - NetBSD\n"); break;
 		case ELFOSABI_SOLARIS: printf("UNIX - Solaris\n"); break;
 		default:
-			printf("Unknown\n");
+			printf("Unknown: %x>\n", osabi);
 			break;
 	}
 }
