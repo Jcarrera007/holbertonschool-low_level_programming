@@ -42,11 +42,14 @@ int main(int argc, char *argv[])
 	if (fd_to == -1)
 		error_exit(99, "Error: Can't write to", argv[2]);
 
-	while ((r = read(fd_from, buffer, 1024)) > 0)
+	r = read(fd_from, buffer, 1024);
+	while (r > 0)
 	{
 		w = write(fd_to, buffer, r);
 		if (w == -1 || w != r)
 			error_exit(99, "Error: Can't write to", argv[2]);
+
+		r = read(fd_from, buffer, 1024);
 	}
 
 	if (r == -1)
