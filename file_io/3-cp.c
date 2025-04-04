@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
 			dprintf(2, "Error: Can't write to %s\n", argv[2]), exit(99);
 	}
 	if ((close(fd)) == -1)
-		dprintf(2, "Error: Can't close fd %d\n", fd), exit(100);
+		dprintf(2, "Error: Can't close fd %d\n", fd), exit(98);
 	if ((close(fp)) == -1)
-		dprintf(2, "Error: Can't close fd %d\n", fp), exit(100);
+		dprintf(2, "Error: Can't close fd %d\n", fp), exit(98);
 	return (0);
 }
