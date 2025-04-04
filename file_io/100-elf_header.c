@@ -6,47 +6,71 @@
 #include <string.h>
 #include <errno.h>
 
+/**
+ * print_error - Prints error message and exits with code 98
+ * @msg: Error message string
+ */
 void print_error(const char *msg)
 {
 	dprintf(STDERR_FILENO, "Error: %s\n", msg);
 	exit(98);
 }
 
+/**
+ * check_elf - Validates ELF magic numbers
+ * @e_ident: Pointer to ELF identification array
+ */
 void check_elf(unsigned char *e_ident)
 {
-	if (e_ident[EI_MAG0] != ELFMAG0 ||
-			e_ident[EI_MAG1] != ELFMAG1 ||
-			e_ident[EI_MAG2] != ELFMAG2 ||
-			e_ident[EI_MAG3] != ELFMAG3)
+	if ((e_ident[EI_MAG0] != ELFMAG0) ||
+	    (e_ident[EI_MAG1] != ELFMAG1) ||
+	    (e_ident[EI_MAG2] != ELFMAG2) ||
+	    (e_ident[EI_MAG3] != ELFMAG3))
 	{
 		print_error("Not an ELF file");
 	}
 }
 
+/**
+ * swap16 - Swaps byte order of a 16-bit unsigned integer
+ * @val: Value to swap
+ * Return: Swapped value
+ */
 unsigned short swap16(unsigned short val)
 {
-	return ((val << 8) | (val >> 8));
+	return ((unsigned short)((val << 8) | (val >> 8)));
 }
 
+/**
+ * swap32 - Swaps byte order of a 32-bit unsigned integer
+ * @val: Value to swap
+ * Return: Swapped value
+ */
 unsigned int swap32(unsigned int val)
 {
-	return ((val >> 24) & 0xFF) |
-		((val >> 8) & 0xFF00) |
-		((val << 8) & 0xFF0000) |
-		((val << 24) & 0xFF000000);
+	return ((unsigned int)(((val >> 24) & 0xFF) |
+			      ((val >> 8) & 0xFF00) |
+			      ((val << 8) & 0xFF0000) |
+			      ((val << 24) & 0xFF000000)));
 }
 
+/**
+ * swap64 - Swaps byte order of a 64-bit unsigned long
+ * @val: Value to swap
+ * Return: Swapped value
+ */
 unsigned long swap64(unsigned long val)
 {
-	return ((val >> 56) & 0x00000000000000FFUL) |
-		((val >> 40) & 0x000000000000FF00UL) |
-		((val >> 24) & 0x0000000000FF0000UL) |
-		((val >> 8) & 0x00000000FF000000UL) |
-		((val << 8) & 0x000000FF00000000UL) |
-		((val << 24) & 0x0000FF0000000000UL) |
-		((val << 40) & 0x00FF000000000000UL) |
-		((val << 56) & 0xFF00000000000000UL);
+	return ((unsigned long)(((val >> 56) & 0x00000000000000FFUL) |
+			     ((val >> 40) & 0x000000000000FF00UL) |
+			     ((val >> 24) & 0x0000000000FF0000UL) |
+			     ((val >> 8) & 0x00000000FF000000UL) |
+			     ((val << 8) & 0x000000FF00000000UL) |
+			     ((val << 24) & 0x0000FF0000000000UL) |
+			     ((val << 40) & 0x00FF000000000000UL) |
+			     ((val << 56) & 0xFF00000000000000UL)));
 }
+
 
 void print_osabi(unsigned char osabi)
 {
