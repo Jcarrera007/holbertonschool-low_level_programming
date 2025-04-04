@@ -136,8 +136,10 @@ int main(int argc, char *argv[])
 	else
 		printf("Invalid data encoding\n");
 
-	printf("  Version:                           %d (current)\n", e_ident[EI_VERSION]);
-	print_osabi(e_ident[EI_OSABI]);
+	printf("  Version:                           %d", e_ident[EI_VERSION]);
+	if (e_ident[EI_VERSION] == EV_CURRENT)
+		printf(" (current)");
+	printf("\n");	print_osabi(e_ident[EI_OSABI]);
 	printf("  ABI Version:                       %d\n", e_ident[EI_ABIVERSION]);
 
 	if (e_ident[EI_CLASS] == ELFCLASS32)
