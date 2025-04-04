@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
 	{
 		if (r == -1)
 		{
-			perror("Error in read"); /* It will print the specified error*/
 			error_exit(98, "Error: Can't read from file", argv[1]);
 		}
 		{
@@ -54,7 +53,6 @@ int main(int argc, char *argv[])
 			w = write(fd_to, buffer, r);
 			if (w == -1 || w != r)
 			{
-				perror("Error in write"); /* It will print the specified error*/
 				error_exit(99, "Error: Can't write to", argv[2]);
 			}
 		}
