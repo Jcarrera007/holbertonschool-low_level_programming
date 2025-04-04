@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "main.h"
 
 #define BUFFER_SIZE 1024
 
